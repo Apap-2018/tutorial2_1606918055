@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -17,15 +18,19 @@ public class PageController {
         return "viral";
     }
 
-    @RequestMapping("/challenge")
-    public String challenge(@RequestParam(value = "name") String name, Model model) {
-        model.addAttribute("name", name);
-        return "challenge";
-    }
+//    @RequestMapping("/challenge")
+//    public String challenge(@RequestParam(value = "name") String name, Model model) {
+//        model.addAttribute("name", name);
+//        return "challenge";
+//    }
 
-    @RequestMapping("/challenge/{name}")
-    public String challengePath(@PathVariable String name, Model model) {
-        model.addAttribute("name", name);
+    @RequestMapping(value = {"/challenge", "/challenge/{name}"})
+    public String challengePath(@PathVariable Optional<String> name, Model model) {
+        if(name.isPresent()) {
+            model.addAttribute("name", name.get());
+        } else {
+            model.addAttribute("name", "KB");
+        }
         return "challenge";
     }
 
